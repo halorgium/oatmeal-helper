@@ -39,10 +39,10 @@ class Helper extends React.Component {
           <p>Time to cook</p>
           <span>{cook.format('HH:mm')}</span>
           <div>
-            <button onClick={() => updateCook(1, 'hour')}>+hour</button>
-            <button onClick={() => updateCook(-1, 'hour')}>-hour</button>
-            <button onClick={() => updateCook(1, 'minute')}>+minute</button>
-            <button onClick={() => updateCook(-1, 'minute')}>-minute</button>
+            <button onClick={() => updateCook(1, 'hour')}>+1h</button>
+            <button onClick={() => updateCook(-1, 'hour')}>-1h</button>
+            <button onClick={() => updateCook(15, 'minutes')}>+15m</button>
+            <button onClick={() => updateCook(-15, 'minutes')}>-15m</button>
           </div>
         </div>
         <div>
