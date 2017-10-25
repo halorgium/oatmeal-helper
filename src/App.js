@@ -14,8 +14,16 @@ const calculateWait = (now, ready, cook) => {
 }
 
 class Helper extends React.Component {
+  static propTypes = {
+    now: PropTypes.instanceOf(moment).isRequired,
+    ready: PropTypes.instanceOf(moment).isRequired,
+    cook: PropTypes.object.isRequired,
+    wait: PropTypes.object.isRequired,
+    updateCook: PropTypes.func.isRequired,
+  }
+
   render () {
-    const { now, ready, cook, wait } = this.props
+    const { now, ready, cook, wait, updateCook } = this.props
 
     return (
       <div>
@@ -30,6 +38,12 @@ class Helper extends React.Component {
         <div>
           <p>Time to cook</p>
           <span>{cook.format('HH:mm')}</span>
+          <div>
+            <button onClick={() => updateCook(1, 'hour')}>+hour</button>
+            <button onClick={() => updateCook(-1, 'hour')}>-hour</button>
+            <button onClick={() => updateCook(1, 'minute')}>+minute</button>
+            <button onClick={() => updateCook(-1, 'minute')}>-minute</button>
+          </div>
         </div>
         <div>
           <p>Time to wait</p>
@@ -55,18 +69,20 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      now: moment()
+      now: moment(),
+      cook: moment.duration('02:30')
     }
 
     this.timer = moment.duration(10, 'seconds').timer({ start: true, loop: true }, () => {
       this.setState({now: moment()})
     })
+
+    this.updateCook = this.updateCook.bind(this)
   }
 
   render () {
-    const now = this.state.now
+    const { now, cook } = this.state
     const ready = makeReady(now)
-    const cook = moment.duration('02:30')
     const wait = calculateWait(now, ready, cook)
 
     return (
@@ -74,9 +90,14 @@ class App extends React.Component {
         <header className='header'>
           <h1 className='title'>Make Oatmeal</h1>
         </header>
-        <Helper now={now} ready={ready} cook={cook} wait={wait} />
+        <Helper now={now} ready={ready} cook={cook} wait={wait} updateCook={this.updateCook} />
       </div>
     )
+  }
+
+  updateCook (amount, unit) {
+    const cook = this.state.cook.clone().add(amount, unit)
+    this.setState({cook})
   }
 }
 
