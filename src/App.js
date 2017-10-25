@@ -13,17 +13,37 @@ const calculateWait = (now, ready, cook) => {
   return moment.duration(ready - now.clone().add(cook))
 }
 
+class Buttons extends React.Component {
+  static propTypes = {
+    updater: PropTypes.func.isRequired
+  }
+
+  render () {
+    const { updater } = this.props
+
+    return (
+      <div>
+        <button onClick={() => updater(1, 'hour')}>+1h</button>
+        <button onClick={() => updater(-1, 'hour')}>-1h</button>
+        <button onClick={() => updater(15, 'minutes')}>+15m</button>
+        <button onClick={() => updater(-15, 'minutes')}>-15m</button>
+      </div>
+    )
+  }
+}
+
 class Helper extends React.Component {
   static propTypes = {
     now: PropTypes.instanceOf(moment).isRequired,
     ready: PropTypes.instanceOf(moment).isRequired,
     cook: PropTypes.object.isRequired,
     wait: PropTypes.object.isRequired,
-    updateCook: PropTypes.func.isRequired,
+    updateReady: PropTypes.func.isRequired,
+    updateCook: PropTypes.func.isRequired
   }
 
   render () {
-    const { now, ready, cook, wait, updateCook } = this.props
+    const { now, ready, cook, wait, updateReady, updateCook } = this.props
 
     return (
       <div>
@@ -34,16 +54,12 @@ class Helper extends React.Component {
         <div>
           <p>Time to be ready</p>
           <span>{ready.format('HH:mm')}</span>
+          <Buttons updater={updateReady} />
         </div>
         <div>
           <p>Time to cook</p>
           <span>{cook.format('HH:mm')}</span>
-          <div>
-            <button onClick={() => updateCook(1, 'hour')}>+1h</button>
-            <button onClick={() => updateCook(-1, 'hour')}>-1h</button>
-            <button onClick={() => updateCook(15, 'minutes')}>+15m</button>
-            <button onClick={() => updateCook(-15, 'minutes')}>-15m</button>
-          </div>
+          <Buttons updater={updateCook} />
         </div>
         <div>
           <p>Time to wait</p>
@@ -84,6 +100,7 @@ class App extends React.Component {
       this.setState({now: moment()})
     })
 
+    this.updateReady = this.updateReady.bind(this)
     this.updateCook = this.updateCook.bind(this)
   }
 
@@ -95,9 +112,19 @@ class App extends React.Component {
         <header className='header'>
           <h1 className='title'>Make Oatmeal</h1>
         </header>
-        <Helper now={now} ready={ready} cook={cook} wait={wait} updateCook={this.updateCook} />
+        <Helper
+          now={now} ready={ready} cook={cook} wait={wait}
+          updateReady={this.updateReady} updateCook={this.updateCook}
+        />
       </div>
     )
+  }
+
+  updateReady (amount, unit) {
+    const { now, cook } = this.state
+    const ready = this.state.ready.clone().add(amount, unit)
+    const wait = calculateWait(now, ready, cook)
+    this.setState({ ready, wait })
   }
 
   updateCook (amount, unit) {
