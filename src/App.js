@@ -13,20 +13,20 @@ const calculateWait = (now, ready, cook) => {
   return moment.duration(ready - now.clone().add(cook))
 }
 
-class Buttons extends React.Component {
+class Deltas extends React.Component {
   static propTypes = {
-    updater: PropTypes.func.isRequired
+    callback: PropTypes.func.isRequired
   }
 
   render () {
-    const { updater } = this.props
+    const { callback } = this.props
 
     return (
       <div>
-        <button onClick={() => updater(1, 'hour')}>+1h</button>
-        <button onClick={() => updater(-1, 'hour')}>-1h</button>
-        <button onClick={() => updater(15, 'minutes')}>+15m</button>
-        <button onClick={() => updater(-15, 'minutes')}>-15m</button>
+        <button onClick={() => callback(1, 'hour')}>+1h</button>
+        <button onClick={() => callback(-1, 'hour')}>-1h</button>
+        <button onClick={() => callback(15, 'minutes')}>+15m</button>
+        <button onClick={() => callback(-15, 'minutes')}>-15m</button>
       </div>
     )
   }
@@ -43,7 +43,7 @@ class Helper extends React.Component {
   }
 
   render () {
-    const { now, ready, cook, wait, updateReady, updateCook } = this.props
+    const { now, ready, cook, wait, deltas } = this.props
 
     return (
       <div>
@@ -53,12 +53,15 @@ class Helper extends React.Component {
         </div>
         <div>
           <p>Time to be ready</p>
-          <Buttons updater={updateReady} />
+          <button onClick={() => '6:30'} />
+          <button onClick={() => '7:00'} />
+          <button onClick={() => '8:00'} />
+          <Deltas callback={deltas.ready} />
           <div>{ready.format('HH:mm')}</div>
         </div>
         <div>
           <p>Time to cook</p>
-          <Buttons updater={updateCook} />
+          <Deltas callback={deltas.cook} />
           <div>{cook.format('HH:mm')}</div>
         </div>
         <div>
@@ -87,25 +90,22 @@ class App extends React.Component {
     const now = moment()
     const cook = moment.duration('02:30')
     const ready = makeReady(now)
-    const wait = calculateWait(now, ready, cook)
 
-    this.state = {
-      now,
-      cook,
-      ready,
-      wait
-    }
+    this.state = { now, cook, ready }
 
     this.timer = moment.duration(10, 'seconds').timer({ start: true, loop: true }, () => {
       this.setState({now: moment()})
     })
 
-    this.updateReady = this.updateReady.bind(this)
-    this.updateCook = this.updateCook.bind(this)
+    this.deltas = {
+      ready: this.delta('ready').bind(this),
+      cook: this.delta('cook').bind(this)
+    }
   }
 
   render () {
-    const { now, ready, cook, wait } = this.state
+    const { now, ready, cook } = this.state
+    const wait = calculateWait(now, ready, cook)
 
     return (
       <div className='App'>
@@ -114,24 +114,17 @@ class App extends React.Component {
         </header>
         <Helper
           now={now} ready={ready} cook={cook} wait={wait}
-          updateReady={this.updateReady} updateCook={this.updateCook}
+          deltas={this.deltas}
         />
       </div>
     )
   }
 
-  updateReady (amount, unit) {
-    const { now, cook } = this.state
-    const ready = this.state.ready.clone().add(amount, unit)
-    const wait = calculateWait(now, ready, cook)
-    this.setState({ ready, wait })
-  }
-
-  updateCook (amount, unit) {
-    const { now, ready } = this.state
-    const cook = this.state.cook.clone().add(amount, unit)
-    const wait = calculateWait(now, ready, cook)
-    this.setState({ cook, wait })
+  delta (key) {
+    return (amount, unit) => {
+      const value = this.state[key].clone().add(amount, unit)
+      this.setState({ [key]: value })
+    }
   }
 }
 
