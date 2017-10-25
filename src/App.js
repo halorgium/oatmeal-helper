@@ -68,9 +68,16 @@ class App extends React.Component {
   constructor (props) {
     super(props)
 
+    const now = moment()
+    const cook = moment.duration('02:30')
+    const ready = makeReady(now)
+    const wait = calculateWait(now, ready, cook)
+
     this.state = {
-      now: moment(),
-      cook: moment.duration('02:30')
+      now,
+      cook,
+      ready,
+      wait
     }
 
     this.timer = moment.duration(10, 'seconds').timer({ start: true, loop: true }, () => {
@@ -81,9 +88,7 @@ class App extends React.Component {
   }
 
   render () {
-    const { now, cook } = this.state
-    const ready = makeReady(now)
-    const wait = calculateWait(now, ready, cook)
+    const { now, ready, cook, wait } = this.state
 
     return (
       <div className='App'>
@@ -96,8 +101,10 @@ class App extends React.Component {
   }
 
   updateCook (amount, unit) {
+    const { now, ready } = this.state
     const cook = this.state.cook.clone().add(amount, unit)
-    this.setState({cook})
+    const wait = calculateWait(now, ready, cook)
+    this.setState({ cook, wait })
   }
 }
 
