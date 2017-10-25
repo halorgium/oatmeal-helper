@@ -49,21 +49,21 @@ class Helper extends React.Component {
       <div>
         <div>
           <p>Time right now</p>
-          <span>{now.format('HH:mm')}</span>
+          <div>{now.format('HH:mm')}</div>
         </div>
         <div>
           <p>Time to be ready</p>
-          <span>{ready.format('HH:mm')}</span>
           <Buttons updater={updateReady} />
+          <div>{ready.format('HH:mm')}</div>
         </div>
         <div>
           <p>Time to cook</p>
-          <span>{cook.format('HH:mm')}</span>
           <Buttons updater={updateCook} />
+          <div>{cook.format('HH:mm')}</div>
         </div>
         <div>
           <p>Time to wait</p>
-          <span>{wait.format('HH:mm')}</span>
+          <div>{wait.format('HH:mm')}</div>
         </div>
       </div>
     )
