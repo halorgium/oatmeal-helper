@@ -15,14 +15,14 @@ const calculateWait = (now, ready, cook) => {
 
 class Absolute extends React.Component {
   static propTypes = {
-    time: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
     updater: PropTypes.func.isRequired
   }
 
   render () {
-    const { time, updater } = this.props
+    const { value, updater } = this.props
 
-    return <button onClick={() => updater(time)}>{time}</button>
+    return <button onClick={() => updater(value)}>{value}</button>
   }
 }
 
@@ -66,14 +66,16 @@ class Helper extends React.Component {
         </div>
         <div>
           <p>Time to be ready</p>
-          <Absolute time='6:30' updater={absolutes.ready} />
-          <Absolute time='7:00' updater={absolutes.ready} />
-          <Absolute time='8:00' updater={absolutes.ready} />
+          <Absolute value='6:30' updater={absolutes.ready} />
+          <Absolute value='7:00' updater={absolutes.ready} />
+          <Absolute value='8:00' updater={absolutes.ready} />
           <Deltas updater={deltas.ready} />
           <div>{ready.format('HH:mm')}</div>
         </div>
         <div>
           <p>Time to cook</p>
+          <Absolute value='2:30' updater={absolutes.cook} />
+          <Absolute value='8:00' updater={absolutes.cook} />
           <Deltas updater={deltas.cook} />
           <div>{cook.format('HH:mm')}</div>
         </div>
@@ -100,6 +102,8 @@ class App extends React.Component {
   constructor (props) {
     super(props)
 
+    this.makeReady = this.makeReady.bind(this)
+
     const now = moment()
     const cook = moment.duration('02:30')
     const ready = makeAbsolute('06:30', now)
@@ -111,7 +115,8 @@ class App extends React.Component {
     })
 
     this.absolutes = {
-      ready: this.absolute('ready').bind(this)
+      ready: this.absolute('ready', this.makeReady).bind(this),
+      cook: this.absolute('cook', moment.duration).bind(this)
     }
 
     this.deltas = {
@@ -137,10 +142,14 @@ class App extends React.Component {
     )
   }
 
-  absolute (key) {
+  makeReady (time) {
+    const { now } = this.state
+    return makeAbsolute(time, now)
+  }
+
+  absolute (key, builder) {
     return (time) => {
-      const { now } = this.state
-      const value = makeAbsolute(time, now)
+      const value = builder(time)
       this.setState({ [key]: value })
     }
   }
