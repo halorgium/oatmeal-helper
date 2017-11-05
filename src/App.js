@@ -110,7 +110,7 @@ class App extends React.Component {
 
     this.state = { now, cook, ready }
 
-    this.timer = moment.duration(10, 'seconds').timer({ start: true, loop: true }, () => {
+    this.timer = moment.duration(10, 'seconds').timer({ loop: true }, () => {
       this.setState({now: moment()})
     })
 
@@ -123,6 +123,16 @@ class App extends React.Component {
       ready: this.delta('ready').bind(this),
       cook: this.delta('cook').bind(this)
     }
+  }
+
+  componentDidMount () {
+    console.log('start')
+    this.timer.start()
+  }
+
+  componentWillUnmount () {
+    console.log('stop')
+    this.timer.stop()
   }
 
   render () {
