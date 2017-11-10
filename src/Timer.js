@@ -4,8 +4,7 @@ import moment from 'moment'
 import 'moment-duration-format'
 import 'moment-timer'
 
-import AbsoluteControl from './AbsoluteControl'
-import DeltaControl from './DeltaControl'
+import Controls from './Controls'
 
 const calculateWait = (now, ready, cook) => {
   if (now.isAfter(ready)) {
@@ -15,63 +14,7 @@ const calculateWait = (now, ready, cook) => {
   return moment.duration(ready - now.clone().add(cook))
 }
 
-class DeltaControls extends React.Component {
-  static propTypes = {
-    updater: PropTypes.func.isRequired
-  }
 
-  render () {
-    const { updater } = this.props
-
-    return [
-      <DeltaControl key='1h' title='1h' value={1} unit='hour' updater={updater} />,
-      <DeltaControl key='15m' title='15m' value={15} unit='minute' updater={updater} />
-    ]
-  }
-}
-
-class Helper extends React.Component {
-  static propTypes = {
-    now: PropTypes.instanceOf(moment).isRequired,
-    ready: PropTypes.instanceOf(moment).isRequired,
-    cook: PropTypes.object.isRequired,
-    wait: PropTypes.object.isRequired,
-    absolutes: PropTypes.object.isRequired,
-    deltas: PropTypes.object.isRequired
-  }
-
-  render () {
-    const { now, ready, cook, wait, absolutes, deltas } = this.props
-
-    return (
-      <div>
-        <div>
-          <p>Time right now</p>
-          <div>{now.format('HH:mm')}</div>
-        </div>
-        <div>
-          <p>Time to be ready</p>
-          <AbsoluteControl value='6:30' updater={absolutes.ready} />
-          <AbsoluteControl value='7:00' updater={absolutes.ready} />
-          <AbsoluteControl value='8:00' updater={absolutes.ready} />
-          <DeltaControls updater={deltas.ready} />
-          <div>{ready.format('HH:mm')}</div>
-        </div>
-        <div>
-          <p>Time to cook</p>
-          <AbsoluteControl value='2:30' updater={absolutes.cook} />
-          <AbsoluteControl value='8:00' updater={absolutes.cook} />
-          <DeltaControls updater={deltas.cook} />
-          <div>{cook.format('HH:mm')}</div>
-        </div>
-        <div>
-          <p>Time to wait</p>
-          <div>{wait.format('HH:mm')}</div>
-        </div>
-      </div>
-    )
-  }
-}
 
 const makeAbsolute = (time, now) => {
   const ready = moment(time, 'HH:mm')
@@ -84,6 +27,8 @@ const makeAbsolute = (time, now) => {
 }
 
 class Timer extends React.Component {
+  static propTypes = {}
+
   constructor (props) {
     super(props)
 
@@ -129,7 +74,7 @@ class Timer extends React.Component {
         <header className='header'>
           <h1 className='title'>Make Oatmeal</h1>
         </header>
-        <Helper
+        <Controls
           now={now} ready={ready} cook={cook} wait={wait}
           absolutes={this.absolutes} deltas={this.deltas}
         />
