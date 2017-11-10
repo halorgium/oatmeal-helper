@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 class DeltaControl extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
     unit: PropTypes.string.isRequired,
-    updater: PropTypes.func.isRequired
+    updater: PropTypes.func.isRequired,
+    value: PropTypes.number.isRequired
   }
 
   render () {

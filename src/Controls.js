@@ -7,12 +7,12 @@ import DeltaControls from './DeltaControls'
 
 class Controls extends React.Component {
   static propTypes = {
+    absolutes: PropTypes.object.isRequired,
+    cook: PropTypes.object.isRequired,
+    deltas: PropTypes.object.isRequired,
     now: PropTypes.instanceOf(moment).isRequired,
     ready: PropTypes.instanceOf(moment).isRequired,
-    cook: PropTypes.object.isRequired,
-    wait: PropTypes.object.isRequired,
-    absolutes: PropTypes.object.isRequired,
-    deltas: PropTypes.object.isRequired
+    wait: PropTypes.object.isRequired
   }
 
   render () {

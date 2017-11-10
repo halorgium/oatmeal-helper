@@ -5,6 +5,6 @@ import App from './App'
 it('renders without crashing', () => {
   const tree = renderer.create(
     <App />
-  ).toJSON();
-  expect(tree).toMatchSnapshot();
+  ).toJSON()
+  expect(tree).toMatchSnapshot()
 })

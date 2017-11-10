@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 
 class AbsoluteButton extends React.Component {
   static propTypes = {
-    value: PropTypes.string.isRequired,
-    updater: PropTypes.func.isRequired
+    updater: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired
   }
 
   render () {
