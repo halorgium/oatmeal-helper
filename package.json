@@ -23,5 +23,9 @@
     "test": "react-scripts test --env=jsdom",
     "lint": "eslint run src",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "raf": "^3.4.0",
+    "react-test-renderer": "^16.1.0"
   }
 }

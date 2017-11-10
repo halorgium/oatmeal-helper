@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="App"
+>
+  <header
+    className="header"
+  >
+    <h1
+      className="title"
+    >
+      Make Oatmeal
+    </h1>
+  </header>
+  <div>
+    <div>
+      <p>
+        Time right now
+      </p>
+      <div>
+        20:41
+      </div>
+    </div>
+    <div>
+      <p>
+        Time to be ready
+      </p>
+      <button
+        onClick={[Function]}
+      >
+        6:30
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        7:00
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        8:00
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        +
+        1h
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        -
+        1h
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        +
+        15m
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        -
+        15m
+      </button>
+      <div>
+        06:30
+      </div>
+    </div>
+    <div>
+      <p>
+        Time to cook
+      </p>
+      <button
+        onClick={[Function]}
+      >
+        2:30
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        8:00
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        +
+        1h
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        -
+        1h
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        +
+        15m
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        -
+        15m
+      </button>
+      <div>
+        02:30
+      </div>
+    </div>
+    <div>
+      <p>
+        Time to wait
+      </p>
+      <div>
+        07:18
+      </div>
+    </div>
+  </div>
+</div>
+`;
