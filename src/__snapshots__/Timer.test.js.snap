@@ -116,7 +116,7 @@ exports[`renders without crashing 1`] = `
         Time to wait
       </p>
       <div>
-        02:29
+        02:30
       </div>
     </div>
   </div>

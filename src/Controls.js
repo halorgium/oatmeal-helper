@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
+import momentPropTypes from 'react-moment-proptypes'
 
 import AbsoluteControl from './AbsoluteControl'
 import DeltaControls from './DeltaControls'
@@ -41,8 +41,8 @@ Controls.propTypes = {
   absolutes: PropTypes.object.isRequired,
   cook: PropTypes.object.isRequired,
   deltas: PropTypes.object.isRequired,
-  now: PropTypes.instanceOf(moment).isRequired,
-  ready: PropTypes.instanceOf(moment).isRequired,
+  now: momentPropTypes.momentObj,
+  ready: momentPropTypes.momentDurationObj,
   wait: PropTypes.object.isRequired
 }
 
