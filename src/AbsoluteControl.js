@@ -1,17 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class AbsoluteButton extends React.Component {
-  static propTypes = {
-    updater: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired
-  }
+function AbsoluteButton ({updater, value}) {
+  return <button onClick={() => updater(value)}>{value}</button>
+}
 
-  render () {
-    const { value, updater } = this.props
-
-    return <button onClick={() => updater(value)}>{value}</button>
-  }
+AbsoluteButton.propTypes = {
+  updater: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired
 }
 
 export default AbsoluteButton

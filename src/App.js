@@ -2,12 +2,10 @@ import React from 'react'
 import Timer from './Timer'
 import './App.css'
 
-class App extends React.Component {
-  static propTypes = {}
-
-  render () {
-    return <Timer />
-  }
+function App () {
+  return <Timer />
 }
+
+App.propTypes = {}
 
 export default App

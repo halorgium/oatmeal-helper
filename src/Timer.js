@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 import 'moment-duration-format'
 import 'moment-timer'
@@ -6,96 +6,79 @@ import 'moment-timer'
 import Controls from './Controls'
 
 const calculateWait = (now, ready, cook) => {
-  if (now.isAfter(ready)) {
+  const readyTime = makeTime(ready, now)
+  if (now.isAfter(readyTime)) {
     throw new Error('ready is not after now')
   }
 
-  return moment.duration(ready - now.clone().add(cook))
+  return moment.duration(readyTime - now.clone().add(cook))
 }
 
-const makeAbsolute = (time, now) => {
-  const ready = moment(time, 'HH:mm')
+const makeTime = (duration, now) => {
+  const time = now.clone()
+  time.startOf('day')
+  time.add(duration)
 
-  if (ready.isAfter(now)) {
-    return ready
+  if (time.isAfter(now)) {
+    return time
   }
 
-  return ready.add(1, 'day')
+  return time.add(1, 'day')
 }
 
-class Timer extends React.Component {
-  static propTypes = {}
+function Timer () {
+  const [now, setNow] = useState(moment())
+  const [cook, setCook] = useState(moment.duration('02:30'))
+  const [ready, setReady] = useState(moment.duration('06:30'))
 
-  constructor (props) {
-    super(props)
-
-    this.makeReady = this.makeReady.bind(this)
-
-    const now = moment()
-    const cook = moment.duration('02:30')
-    const ready = makeAbsolute('06:30', now)
-
-    this.state = { now, cook, ready }
-
-    this.timer = moment.duration(10, 'seconds').timer({ loop: true }, () => {
-      this.setState({now: moment()})
+  useEffect(() => {
+    const timer = moment.duration(10, 'seconds').timer({ loop: true }, () => {
+      setNow(moment())
     })
+    timer.start()
 
-    this.absolutes = {
-      ready: this.absolute('ready', this.makeReady).bind(this),
-      cook: this.absolute('cook', moment.duration).bind(this)
+    return () => {
+      timer.stop()
     }
+  }, [])
 
-    this.deltas = {
-      ready: this.delta('ready').bind(this),
-      cook: this.delta('cook').bind(this)
-    }
-  }
-
-  componentDidMount () {
-    this.timer.start()
-  }
-
-  componentWillUnmount () {
-    this.timer.stop()
-  }
-
-  makeReady (time) {
-    const { now } = this.state
-    return makeAbsolute(time, now)
-  }
-
-  absolute (key, builder) {
+  function absolute (setter, builder) {
     return (time) => {
-      const value = builder(time)
-      this.setState({ [key]: value })
+      const value = moment.duration(time)
+      setter(value)
     }
   }
 
-  delta (key) {
+  function delta (setter) {
     return (amount, unit) => {
-      const value = this.state[key].clone().add(amount, unit)
-      this.setState({ [key]: value })
+      setter(value => value.clone().add(amount, unit))
     }
   }
 
-  render () {
-    const { now, ready, cook } = this.state
-    const wait = calculateWait(now, ready, cook)
-
-    return (
-      <div className='App'>
-        <header className='header'>
-          <h1 className='title'>Make Oatmeal</h1>
-        </header>
-        <Controls
-          now={now} ready={ready} cook={cook}
-          wait={wait}
-          absolutes={this.absolutes} deltas={this.deltas}
-        />
-      </div>
-    )
+  const absolutes = {
+    ready: absolute(setReady),
+    cook: absolute(setCook)
   }
+
+  const deltas = {
+    ready: delta(setReady),
+    cook: delta(setCook)
+  }
+
+  const wait = calculateWait(now, ready, cook)
+
+  return (
+    <div className='App'>
+      <header className='header'>
+        <h1 className='title'>Make Oatmeal</h1>
+      </header>
+      <Controls
+        now={now} ready={ready} cook={cook}
+        wait={wait}
+        absolutes={absolutes} deltas={deltas}
+      />
+    </div>
+  )
 }
 
 export default Timer
