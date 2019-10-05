@@ -1,35 +1,26 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import moment from 'moment'
 import 'moment-duration-format'
 import 'moment-timer'
 
 import Controls from './Controls'
 
-const calculateWait = (now, ready, cook) => {
-  const readyTime = makeTime(ready, now)
-  if (now.isAfter(readyTime)) {
-    throw new Error('ready is not after now')
-  }
-
-  return moment.duration(readyTime - now.clone().add(cook))
-}
-
-const makeTime = (duration, now) => {
+const calculateWait = (now, start, duration) => {
   const time = now.clone()
   time.startOf('day')
   time.add(duration)
 
-  if (time.isAfter(now)) {
-    return time
+  if (!time.isAfter(now)) {
+    time.add(1, 'day')
   }
 
-  return time.add(1, 'day')
+  time.subtract(start)
+
+  return moment.duration(time - now.clone())
 }
 
-function Timer () {
+function useNow () {
   const [now, setNow] = useState(moment())
-  const [cook, setCook] = useState(moment.duration('02:30'))
-  const [ready, setReady] = useState(moment.duration('06:30'))
 
   useEffect(() => {
     const timer = moment.duration(10, 'seconds').timer({ loop: true }, () => {
@@ -42,30 +33,41 @@ function Timer () {
     }
   }, [])
 
-  function absolute (setter, builder) {
-    return (time) => {
-      const value = moment.duration(time)
-      setter(value)
-    }
-  }
+  return now
+}
 
-  function delta (setter) {
-    return (amount, unit) => {
-      setter(value => value.clone().add(amount, unit))
-    }
-  }
+function useDuration (initial) {
+  const [duration, setDuration] = useState(moment.duration(initial))
 
-  const absolutes = {
-    ready: absolute(setReady),
-    cook: absolute(setCook)
-  }
+  const set = useCallback((time) => {
+    setDuration(moment.duration(time))
+  }, [])
 
-  const deltas = {
-    ready: delta(setReady),
-    cook: delta(setCook)
-  }
+  const add = useCallback((amount, unit) => {
+    setDuration(original => {
+      const value = original.clone()
+      value.add(amount, unit)
 
-  const wait = calculateWait(now, ready, cook)
+      if (value.seconds() < 0) {
+        return original
+      }
+
+      return value
+    })
+  }, [])
+
+  return {
+    duration,
+    set,
+    add
+  }
+}
+
+function Timer () {
+  const now = useNow()
+  const cook = useDuration('02:30')
+  const ready = useDuration('06:30')
+  const wait = calculateWait(now, ready.duration, cook.duration)
 
   return (
     <div className='App'>
@@ -73,9 +75,7 @@ function Timer () {
         <h1 className='title'>Make Oatmeal</h1>
       </header>
       <Controls
-        now={now} ready={ready} cook={cook}
-        wait={wait}
-        absolutes={absolutes} deltas={deltas}
+        now={now} ready={ready} cook={cook} wait={wait}
       />
     </div>
   )
