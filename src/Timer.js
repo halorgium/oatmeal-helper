@@ -8,15 +8,14 @@ import Controls from './Controls'
 const calculateWait = (now, start, duration) => {
   const time = now.clone()
   time.startOf('day')
-  time.add(duration)
+  time.add(start)
+  time.subtract(duration)
 
-  if (!time.isAfter(now)) {
+  if (time.isBefore(now)) {
     time.add(1, 'day')
   }
 
-  time.subtract(start)
-
-  return moment.duration(time - now.clone())
+  return moment.duration(time.diff(now))
 }
 
 function useNow () {

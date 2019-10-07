@@ -19,7 +19,7 @@ exports[`renders without crashing 1`] = `
         Time right now
       </p>
       <div>
-        01:30
+        13:21
       </div>
     </div>
     <div>
@@ -116,7 +116,7 @@ exports[`renders without crashing 1`] = `
         Time to wait
       </p>
       <div>
-        02:30
+        14:39
       </div>
     </div>
   </div>

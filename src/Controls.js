@@ -38,9 +38,17 @@ function Controls (props) {
 }
 
 Controls.propTypes = {
-  cook: PropTypes.object.isRequired,
+  cook: PropTypes.shape({
+    set: PropTypes.func,
+    add: PropTypes.func,
+    duration: momentPropTypes.momentDurationObj
+  }),
   now: momentPropTypes.momentObj,
-  ready: momentPropTypes.momentDurationObj,
+  ready: PropTypes.shape({
+    set: PropTypes.func,
+    add: PropTypes.func,
+    duration: momentPropTypes.momentDurationObj
+  }),
   wait: PropTypes.object.isRequired
 }
 
