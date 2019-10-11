@@ -1,18 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import 'moment-duration-format'
 
-function DeltaControl ({title, unit, updater, value}) {
+function DeltaControl ({duration, updater}) {
+  const title = duration.format('HH:mm')
+
   return [
-    <button key='add' onClick={() => updater(value, unit)}>+{title}</button>,
-    <button key='subtract' onClick={() => updater(-value, unit)}>-{title}</button>
+    <button key='add' onClick={() => updater(duration)}>+{title}</button>,
+    <button key='subtract' onClick={() => updater(-duration)}>-{title}</button>
   ]
 }
 
 DeltaControl.propTypes = {
-  title: PropTypes.string.isRequired,
-  unit: PropTypes.string.isRequired,
   updater: PropTypes.func.isRequired,
-  value: PropTypes.number.isRequired
+  duration: PropTypes.object.isRequired
 }
 
 export default DeltaControl

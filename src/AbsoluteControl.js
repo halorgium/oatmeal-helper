@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-function AbsoluteButton ({updater, value}) {
-  return <button onClick={() => updater(value)}>{value}</button>
+function AbsoluteControl ({updater, duration}) {
+  const title = duration.format('HH:mm')
+
+  return <button onClick={() => updater(duration)}>{title}</button>
 }
 
-AbsoluteButton.propTypes = {
+AbsoluteControl.propTypes = {
   updater: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired
+  duration: PropTypes.object.isRequired
 }
 
-export default AbsoluteButton
+export default AbsoluteControl

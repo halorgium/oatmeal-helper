@@ -14,110 +14,108 @@ exports[`renders without crashing 1`] = `
     </h1>
   </header>
   <div>
+    <p>
+      Time right now
+    </p>
     <div>
-      <p>
-        Time right now
-      </p>
-      <div>
-        13:21
-      </div>
+      13:21
     </div>
+  </div>
+  <div>
+    <p>
+      Time to be ready
+    </p>
+    <button
+      onClick={[Function]}
+    >
+      06:30
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      07:00
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      08:00
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      +
+      15
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      -
+      15
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      +
+      01:00
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      -
+      01:00
+    </button>
     <div>
-      <p>
-        Time to be ready
-      </p>
-      <button
-        onClick={[Function]}
-      >
-        6:30
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        7:00
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        8:00
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        +
-        1h
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        -
-        1h
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        +
-        15m
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        -
-        15m
-      </button>
-      <div>
-        06:30
-      </div>
+      06:30
     </div>
+  </div>
+  <div>
+    <p>
+      Time to cook
+    </p>
+    <button
+      onClick={[Function]}
+    >
+      02:30
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      08:00
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      +
+      15
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      -
+      15
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      +
+      01:00
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      -
+      01:00
+    </button>
     <div>
-      <p>
-        Time to cook
-      </p>
-      <button
-        onClick={[Function]}
-      >
-        2:30
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        8:00
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        +
-        1h
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        -
-        1h
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        +
-        15m
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        -
-        15m
-      </button>
-      <div>
-        02:30
-      </div>
+      02:30
     </div>
+  </div>
+  <div>
+    <p>
+      Time to wait
+    </p>
     <div>
-      <p>
-        Time to wait
-      </p>
-      <div>
-        14:39
-      </div>
+      10:39
     </div>
   </div>
 </div>

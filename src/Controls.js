@@ -1,55 +1,47 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import momentPropTypes from 'react-moment-proptypes'
 
 import AbsoluteControl from './AbsoluteControl'
-import DeltaControls from './DeltaControls'
+import DeltaControl from './DeltaControl'
 
 function Controls (props) {
-  const { now, ready, cook, wait } = props
+  const { title, times, durations, set, add, value} = props
+
+  const timeControls = times.map(time => {
+    return <AbsoluteControl
+      key={time}
+      duration={moment.duration(time)}
+      updater={set}
+    />
+  })
+
+  const durationControls = durations.map(duration => {
+    return <DeltaControl
+      key={duration}
+      duration={moment.duration(duration)}
+      updater={add}
+    />
+  })
 
   return (
     <div>
-      <div>
-        <p>Time right now</p>
-        <div>{now.format('HH:mm')}</div>
-      </div>
-      <div>
-        <p>Time to be ready</p>
-        <AbsoluteControl value='6:30' updater={ready.set} />
-        <AbsoluteControl value='7:00' updater={ready.set} />
-        <AbsoluteControl value='8:00' updater={ready.set} />
-        <DeltaControls updater={ready.add} />
-        <div>{ready.duration.format('HH:mm')}</div>
-      </div>
-      <div>
-        <p>Time to cook</p>
-        <AbsoluteControl value='2:30' updater={cook.set} />
-        <AbsoluteControl value='8:00' updater={cook.set} />
-        <DeltaControls updater={cook.add} />
-        <div>{cook.duration.format('HH:mm')}</div>
-      </div>
-      <div>
-        <p>Time to wait</p>
-        <div>{wait.format('HH:mm')}</div>
-      </div>
+      <p>{title}</p>
+      {timeControls}
+      {durationControls}
+      <div>{value.format('HH:mm')}</div>
     </div>
   )
 }
 
 Controls.propTypes = {
-  cook: PropTypes.shape({
-    set: PropTypes.func,
-    add: PropTypes.func,
-    duration: momentPropTypes.momentDurationObj
-  }),
-  now: momentPropTypes.momentObj,
-  ready: PropTypes.shape({
-    set: PropTypes.func,
-    add: PropTypes.func,
-    duration: momentPropTypes.momentDurationObj
-  }),
-  wait: PropTypes.object.isRequired
+  title: PropTypes.string,
+  set: PropTypes.func,
+  add: PropTypes.func,
+  times: PropTypes.array,
+  durations: PropTypes.array,
+  value: momentPropTypes.momentDurationObj
 }
 
 export default Controls

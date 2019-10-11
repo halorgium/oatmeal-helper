@@ -56,7 +56,7 @@ function useDuration (initial) {
   }, [])
 
   return {
-    duration,
+    value: duration,
     set,
     add
   }
@@ -73,9 +73,26 @@ function Timer () {
       <header className='header'>
         <h1 className='title'>Make Oatmeal</h1>
       </header>
+      <div>
+        <p>Time right now</p>
+        <div>{now.format('HH:mm')}</div>
+      </div>
       <Controls
-        now={now} ready={ready} cook={cook} wait={wait}
+        title='Time to be ready'
+        times={['6:30', '7:00', '8:00']}
+        durations={['00:15', '01:00']}
+        {...ready}
       />
+      <Controls
+        title='Time to cook'
+        times={['2:30', '8:00']}
+        durations={['00:15', '01:00']}
+        {...cook}
+      />
+      <div>
+        <p>Time to wait</p>
+        <div>{wait.format('HH:mm')}</div>
+      </div>
     </div>
   )
 }
