@@ -1,47 +1,39 @@
-import React from 'react'
+import React, { createContext, useContext } from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
-import momentPropTypes from 'react-moment-proptypes'
 
-import AbsoluteControl from './AbsoluteControl'
-import DeltaControl from './DeltaControl'
+const ControlsContext = createContext()
 
-function Controls (props) {
-  const { title, times, durations, set, add, value} = props
+function useControlsContext () {
+  const context = useContext(ControlsContext)
+  if (!context) {
+    throw new Error(
+      'Controls compound components cannot be rendered outside the Controls component'
+    )
+  }
+  return context
+}
 
-  const timeControls = times.map(time => {
-    return <AbsoluteControl
-      key={time}
-      duration={moment.duration(time)}
-      updater={set}
-    />
-  })
-
-  const durationControls = durations.map(duration => {
-    return <DeltaControl
-      key={duration}
-      duration={moment.duration(duration)}
-      updater={add}
-    />
-  })
-
+function Controls ({ duration, children }) {
   return (
-    <div>
-      <p>{title}</p>
-      {timeControls}
-      {durationControls}
-      <div>{value.format('HH:mm')}</div>
-    </div>
+    <ControlsContext.Provider value={duration}>
+      {children}
+    </ControlsContext.Provider>
   )
 }
 
 Controls.propTypes = {
-  title: PropTypes.string,
-  set: PropTypes.func,
-  add: PropTypes.func,
-  times: PropTypes.array,
-  durations: PropTypes.array,
-  value: momentPropTypes.momentDurationObj
+  children: PropTypes.node.isRequired,
+  duration: PropTypes.object.isRequired
 }
 
+function Value () {
+  const { value } = useControlsContext()
+  return value.format('HH:mm')
+}
+
+Value.displayName = 'Controls.Value'
+
+Controls.Value = Value
+
 export default Controls
+export { useControlsContext }

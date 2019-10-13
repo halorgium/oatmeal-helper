@@ -7,7 +7,7 @@
     "standard",
     "standard-react"
   ],
-  "plugins": ["react", "whatwg-fetch", "jest"],
+  "plugins": ["react", "react-hooks", "whatwg-fetch", "jest"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
@@ -25,6 +25,7 @@
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx"] }],
     "react/forbid-component-props": [2, { "forbid": ["style"] }],
     "react/jsx-max-props-per-line": [2, { "maximum": 3, "when": "always" }],
+    "react/jsx-one-expression-per-line": [0],
     "react/prefer-stateless-function": [0],
     "react/require-optimization": [0],
     "react/forbid-prop-types": [0],

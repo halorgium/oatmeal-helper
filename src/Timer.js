@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { createContext, useState, useEffect, useCallback, useContext } from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import 'moment-duration-format'
 import 'moment-timer'
@@ -62,39 +63,87 @@ function useDuration (initial) {
   }
 }
 
-function Timer () {
+const TimerContext = createContext()
+
+function useTimerContext () {
+  const context = useContext(TimerContext)
+  if (!context) {
+    throw new Error(
+      'Timer compound components cannot be rendered outside the Timer component'
+    )
+  }
+  return context
+}
+
+function Timer ({ children }) {
   const now = useNow()
   const cook = useDuration('02:30')
   const ready = useDuration('06:30')
-  const wait = calculateWait(now, ready.duration, cook.duration)
+  const wait = calculateWait(now, ready.value, cook.value)
+
+  const value = {
+    now,
+    cook,
+    ready,
+    wait
+  }
 
   return (
-    <div className='App'>
-      <header className='header'>
-        <h1 className='title'>Make Oatmeal</h1>
-      </header>
-      <div>
-        <p>Time right now</p>
-        <div>{now.format('HH:mm')}</div>
-      </div>
-      <Controls
-        title='Time to be ready'
-        times={['6:30', '7:00', '8:00']}
-        durations={['00:15', '01:00']}
-        {...ready}
-      />
-      <Controls
-        title='Time to cook'
-        times={['2:30', '8:00']}
-        durations={['00:15', '01:00']}
-        {...cook}
-      />
-      <div>
-        <p>Time to wait</p>
-        <div>{wait.format('HH:mm')}</div>
-      </div>
-    </div>
+    <TimerContext.Provider value={value}>
+      {children}
+    </TimerContext.Provider>
   )
 }
+
+Timer.propTypes = {
+  children: PropTypes.node.isRequired
+}
+
+function Now () {
+  const { now } = useTimerContext()
+  return now.format('HH:mm')
+}
+
+Now.displayName = 'Timer.Now'
+
+function ControlReady ({ children }) {
+  const { ready } = useTimerContext()
+
+  return (
+    <Controls duration={ready}>
+      {children}
+    </Controls>
+  )
+}
+
+ControlReady.displayName = 'Timer.ControlReady'
+ControlReady.propTypes = {
+  children: PropTypes.node.isRequired
+}
+
+function ControlCook ({ children }) {
+  const { cook } = useTimerContext()
+
+  return (
+    <Controls duration={cook}>
+      {children}
+    </Controls>
+  )
+}
+
+ControlCook.displayName = 'Timer.ControlCook'
+ControlCook.propTypes = {
+  children: PropTypes.node.isRequired
+}
+
+function Wait () {
+  const { wait } = useTimerContext()
+  return wait.format('HH:mm')
+}
+
+Timer.Now = Now
+Timer.ControlCook = ControlCook
+Timer.ControlReady = ControlReady
+Timer.Wait = Wait
 
 export default Timer

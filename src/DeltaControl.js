@@ -1,19 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 import 'moment-duration-format'
+import { useControlsContext } from './Controls'
 
-function DeltaControl ({duration, updater}) {
+function DeltaControl ({ diff }) {
+  const controls = useControlsContext()
+  const duration = moment.duration(diff)
   const title = duration.format('HH:mm')
 
-  return [
-    <button key='add' onClick={() => updater(duration)}>+{title}</button>,
-    <button key='subtract' onClick={() => updater(-duration)}>-{title}</button>
-  ]
+  return (
+    <>
+      <button type='button' onClick={() => controls.add(duration)}>
+        +{title}
+      </button>
+      <button type='button' onClick={() => controls.add(-duration)}>
+        -{title}
+      </button>
+    </>
+  )
 }
 
 DeltaControl.propTypes = {
-  updater: PropTypes.func.isRequired,
-  duration: PropTypes.object.isRequired
+  diff: PropTypes.string.isRequired
 }
 
 export default DeltaControl
