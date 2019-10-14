@@ -4,7 +4,9 @@ import Timer from './Timer'
 
 it('renders without crashing', () => {
   const tree = renderer.create(
-    <Timer />
+    <Timer>
+      <Timer.Now />
+    </Timer>
   ).toJSON()
   expect(tree).toMatchSnapshot()
 })
