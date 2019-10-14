@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback, useContext } from 'react'
+import React, { createContext, useState, useEffect, useCallback, useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import 'moment-duration-format'
@@ -23,13 +23,12 @@ function useNow () {
   const [now, setNow] = useState(moment())
 
   useEffect(() => {
-    const timer = moment.duration(10, 'seconds').timer({ loop: true }, () => {
+    const interval = setInterval(() => {
       setNow(moment())
-    })
-    timer.start()
+    }, 1000)
 
     return () => {
-      timer.stop()
+      clearInterval(interval)
     }
   }, [])
 
@@ -79,14 +78,15 @@ function Timer ({ children }) {
   const now = useNow()
   const cook = useDuration('02:30')
   const ready = useDuration('06:30')
-  const wait = calculateWait(now, ready.value, cook.value)
 
-  const value = {
-    now,
-    cook,
-    ready,
-    wait
-  }
+  const value = useMemo(() => {
+    return {
+      now,
+      cook,
+      ready,
+      wait: calculateWait(now, ready, cook)
+    }
+  }, [now, cook, ready])
 
   return (
     <TimerContext.Provider value={value}>

@@ -13,35 +13,23 @@ function App () {
         <header className='header'>
           <h1 className='title'>Make Oatmeal</h1>
         </header>
-        <div>
-          <p>Time right now</p>
-          <div><Timer.Now /></div>
-        </div>
-        <Timer.ControlReady>
-          <div>
-            <p>Time to be ready</p>
-            <AbsoluteControl time='06:30' />
-            <AbsoluteControl time='07:00' />
-            <AbsoluteControl time='08:00' />
-            <DeltaControl diff='00:15' />
-            <DeltaControl diff='01:00' />
-            <div><Controls.Value /></div>
-          </div>
+        <div>Time right now: <Timer.Now /></div>
+        <Timer.ControlReady initial='06:30'>
+          <div>Time to be ready: <Controls.Value /></div>
+          <AbsoluteControl time='06:30' />
+          <AbsoluteControl time='07:00' />
+          <AbsoluteControl time='08:00' />
+          <DeltaControl diff='00:15' />
+          <DeltaControl diff='01:00' />
         </Timer.ControlReady>
-        <Timer.ControlCook>
-          <div>
-            <p>Time to cook</p>
-            <AbsoluteControl time='02:30' />
-            <AbsoluteControl time='08:00' />
-            <DeltaControl diff='00:15' />
-            <DeltaControl diff='01:00' />
-            <div><Controls.Value /></div>
-          </div>
+        <Timer.ControlCook initial='02:30'>
+          <div>Time to cook: <Controls.Value /></div>
+          <AbsoluteControl time='02:30' />
+          <AbsoluteControl time='08:00' />
+          <DeltaControl diff='00:15' />
+          <DeltaControl diff='01:00' />
         </Timer.ControlCook>
-        <div>
-          <p>Time to wait</p>
-          <div><Timer.Wait /></div>
-        </div>
+        <div>Time to wait: <Timer.Wait /></div>
       </div>
     </Timer>
   )
