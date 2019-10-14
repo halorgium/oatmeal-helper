@@ -14,7 +14,7 @@ function App () {
           <h1 className='title'>Make Oatmeal</h1>
         </header>
         <div>Time right now: <Timer.Now /></div>
-        <Timer.ControlReady initial='06:30'>
+        <Timer.ControlReady>
           <div>Time to be ready: <Controls.Value /></div>
           <AbsoluteControl time='06:30' />
           <AbsoluteControl time='07:00' />
@@ -22,7 +22,7 @@ function App () {
           <DeltaControl diff='00:15' />
           <DeltaControl diff='01:00' />
         </Timer.ControlReady>
-        <Timer.ControlCook initial='02:30'>
+        <Timer.ControlCook>
           <div>Time to cook: <Controls.Value /></div>
           <AbsoluteControl time='02:30' />
           <AbsoluteControl time='08:00' />
