@@ -12,11 +12,11 @@ const calculateWait = (now, start, duration) => {
   time.add(start)
   time.subtract(duration)
 
-  if (time.isBefore(now)) {
-    time.add(1, 'day')
+  const diff = moment.duration(time.diff(now))
+  if (diff.as('seconds') < 0) {
+    diff.add(1, 'day')
   }
-
-  return moment.duration(time.diff(now))
+  return diff
 }
 
 function useNow () {
@@ -47,8 +47,10 @@ function useDuration (initial) {
       const value = original.clone()
       value.add(amount, unit)
 
-      if (value.seconds() < 0) {
-        return original
+      if (value.as('seconds') < 0) {
+        value.add(1, 'day')
+      } else if (value.as('seconds') > 86400) {
+        value.subtract(1, 'day')
       }
 
       return value
@@ -84,7 +86,7 @@ function Timer ({ children }) {
       now,
       cook,
       ready,
-      wait: calculateWait(now, ready, cook)
+      wait: calculateWait(now, ready.value, cook.value)
     }
   }, [now, cook, ready])
 
