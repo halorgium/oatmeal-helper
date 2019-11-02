@@ -80,8 +80,8 @@ function Timer ({ initialCook, initialReady, clock, delay, children }) {
       now,
       cook,
       ready,
-      wait, 
-      total 
+      wait,
+      total
     }
   }, [now, cook, ready])
 
@@ -93,7 +93,11 @@ function Timer ({ initialCook, initialReady, clock, delay, children }) {
 }
 
 Timer.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  clock: PropTypes.func,
+  delay: PropTypes.number,
+  initialCook: PropTypes.string.isRequired,
+  initialReady: PropTypes.string.isRequired
 }
 
 const defaultClock = () => {

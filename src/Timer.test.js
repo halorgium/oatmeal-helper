@@ -1,6 +1,5 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import moment from 'moment'
 import Timer from './Timer'
 
 it('renders without crashing', () => {
