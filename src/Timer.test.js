@@ -4,7 +4,7 @@ import moment from 'moment'
 import Timer from './Timer'
 
 it('renders without crashing', () => {
-  const clock = () => moment('2017-02-08 21:21:00.000Z')
+  const clock = () => '21:21'
 
   const tree = renderer.create(
     <Timer initialCook='02:30' initialReady='06:30' clock={clock} delay={0}>
@@ -15,18 +15,29 @@ it('renders without crashing', () => {
 })
 
 describe('Context', () => {
-  it('stores the information', () => {
-    const ShowContext = () => {
-      const context = Timer.useContext()
-      return (
-        <span>{JSON.stringify(context)}</span>
-      )
-    }
+  const ShowContext = () => {
+    const context = Timer.useContext()
+    return (
+      <span>{JSON.stringify(context)}</span>
+    )
+  }
 
-    const clock = () => moment('2017-02-08 21:21:00.000Z')
+  it('stores the information', () => {
+    const clock = () => '21:21'
 
     const tree = renderer.create(
       <Timer initialCook='02:30' initialReady='06:30' clock={clock} delay={0}>
+        <ShowContext />
+      </Timer>
+    ).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+
+  it('handles odd cases', () => {
+    const clock = () => '09:41'
+
+    const tree = renderer.create(
+      <Timer initialCook='23:45' initialReady='06:30' clock={clock} delay={0}>
         <ShowContext />
       </Timer>
     ).toJSON()

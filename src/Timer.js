@@ -4,23 +4,11 @@ import moment from 'moment'
 import 'moment-duration-format'
 import 'moment-timer'
 
+import { calculateWait } from './calculations'
 import Controls from './Controls'
 
-const calculateWait = (now, start, duration) => {
-  const time = now.clone()
-  time.startOf('day')
-  time.add(start)
-  time.subtract(duration)
-
-  const diff = moment.duration(time.diff(now))
-  if (diff.as('seconds') < 0) {
-    diff.add(24, 'hours')
-  }
-  return diff
-}
-
 function useNow (clock, delay) {
-  const [now, setNow] = useState(clock)
+  const [now, setNow] = useState(() => moment.duration(clock()))
 
   useEffect(() => {
     if (delay <= 0) {
@@ -28,7 +16,7 @@ function useNow (clock, delay) {
     }
 
     const interval = setInterval(() => {
-      setNow(clock())
+      setNow(moment.duration(clock()))
     }, delay)
 
     return () => {
@@ -40,7 +28,7 @@ function useNow (clock, delay) {
 }
 
 function useDuration (initial) {
-  const [duration, setDuration] = useState(moment.duration(initial))
+  const [duration, setDuration] = useState(() => moment.duration(initial))
 
   const set = useCallback((time) => {
     setDuration(moment.duration(time))
@@ -52,9 +40,7 @@ function useDuration (initial) {
       value.add(amount, unit)
 
       if (value.as('seconds') < 0) {
-        value.add(24, 'hours')
-      } else if (value.as('seconds') > 86400) {
-        value.subtract(24, 'hours')
+        return original
       }
 
       return value
@@ -86,11 +72,16 @@ function Timer ({ initialCook, initialReady, clock, delay, children }) {
   const ready = useDuration(initialReady)
 
   const value = useMemo(() => {
+    const wait = calculateWait(now, ready.value, cook.value)
+    const total = cook.value.clone()
+    total.add(wait)
+
     return {
       now,
       cook,
       ready,
-      wait: calculateWait(now, ready.value, cook.value)
+      wait, 
+      total 
     }
   }, [now, cook, ready])
 
@@ -105,8 +96,14 @@ Timer.propTypes = {
   children: PropTypes.node.isRequired
 }
 
+const defaultClock = () => {
+  const now = moment()
+  const dayStart = now.clone().startOf('day')
+  return moment.duration(now.diff(dayStart))
+}
+
 Timer.defaultProps = {
-  clock: moment,
+  clock: defaultClock,
   delay: 1000
 }
 
@@ -149,13 +146,23 @@ ControlCook.propTypes = {
 
 function Wait () {
   const { wait } = useContext()
-  return wait.format('HH:mm')
+  return wait.format('d [days] HH:mm')
 }
+
+Wait.displayName = 'Timer.Wait'
+
+function Total () {
+  const { total } = useContext()
+  return total.format('d [days] HH:mm')
+}
+
+Total.displayName = 'Timer.Total'
 
 Timer.Now = Now
 Timer.ControlCook = ControlCook
 Timer.ControlReady = ControlReady
 Timer.Wait = Wait
+Timer.Total = Total
 Timer.useContext = useContext
 
 export default Timer

@@ -30,6 +30,7 @@ function App () {
           <DeltaControl diff='01:00' />
         </Timer.ControlCook>
         <div>Time to wait: <Timer.Wait /></div>
+        <div>Total Time: <Timer.Total /></div>
       </div>
     </Timer>
   )

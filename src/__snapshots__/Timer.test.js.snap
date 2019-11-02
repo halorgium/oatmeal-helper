@@ -1,9 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Context stores the information 1`] = `
+exports[`Context handles odd cases 1`] = `
 <span>
-  {"now":"2017-02-08T21:21:00.000Z","cook":{"value":"PT2H30M"},"ready":{"value":"PT6H30M"},"wait":"PT14H39M"}
+  {"now":"PT9H41M","cook":{"value":"PT23H45M"},"ready":{"value":"PT6H30M"},"wait":"PT21H4M","total":"PT44H49M"}
 </span>
 `;
 
-exports[`renders without crashing 1`] = `"13:21"`;
+exports[`Context stores the information 1`] = `
+<span>
+  {"now":"PT21H21M","cook":{"value":"PT2H30M"},"ready":{"value":"PT6H30M"},"wait":"PT6H39M","total":"PT9H9M"}
+</span>
+`;
+
+exports[`renders without crashing 1`] = `"21:21"`;

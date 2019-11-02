@@ -28,7 +28,7 @@ Controls.propTypes = {
 
 function Value () {
   const { value } = useControlsContext()
-  return value.format('HH:mm')
+  return value.format('d [days] HH:mm')
 }
 
 Value.displayName = 'Controls.Value'
