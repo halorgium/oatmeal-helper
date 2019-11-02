@@ -19,18 +19,22 @@ const calculateWait = (now, start, duration) => {
   return diff
 }
 
-function useNow () {
-  const [now, setNow] = useState(moment())
+function useNow (clock, delay) {
+  const [now, setNow] = useState(clock)
 
   useEffect(() => {
+    if (delay <= 0) {
+      return
+    }
+
     const interval = setInterval(() => {
-      setNow(moment())
-    }, 1000)
+      setNow(clock())
+    }, delay)
 
     return () => {
       clearInterval(interval)
     }
-  }, [])
+  }, [clock, delay])
 
   return now
 }
@@ -76,10 +80,10 @@ function useContext () {
   return context
 }
 
-function Timer ({ children }) {
-  const now = useNow()
-  const cook = useDuration('02:30')
-  const ready = useDuration('06:30')
+function Timer ({ initialCook, initialReady, clock, delay, children }) {
+  const now = useNow(clock, delay)
+  const cook = useDuration(initialCook)
+  const ready = useDuration(initialReady)
 
   const value = useMemo(() => {
     return {
@@ -99,6 +103,11 @@ function Timer ({ children }) {
 
 Timer.propTypes = {
   children: PropTypes.node.isRequired
+}
+
+Timer.defaultProps = {
+  clock: moment,
+  delay: 1000
 }
 
 function Now () {

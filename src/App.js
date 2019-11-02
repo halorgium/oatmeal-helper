@@ -8,7 +8,7 @@ import './App.css'
 
 function App () {
   return (
-    <Timer>
+    <Timer initialCook='02:30' initialReady='06:30'>
       <div className='App'>
         <header className='header'>
           <h1 className='title'>Make Oatmeal</h1>
