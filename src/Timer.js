@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback, useContext, useMemo } from 'react'
+import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import 'moment-duration-format'
@@ -14,7 +14,7 @@ const calculateWait = (now, start, duration) => {
 
   const diff = moment.duration(time.diff(now))
   if (diff.as('seconds') < 0) {
-    diff.add(1, 'day')
+    diff.add(24, 'hours')
   }
   return diff
 }
@@ -48,9 +48,9 @@ function useDuration (initial) {
       value.add(amount, unit)
 
       if (value.as('seconds') < 0) {
-        value.add(1, 'day')
+        value.add(24, 'hours')
       } else if (value.as('seconds') > 86400) {
-        value.subtract(1, 'day')
+        value.subtract(24, 'hours')
       }
 
       return value
@@ -64,10 +64,10 @@ function useDuration (initial) {
   }
 }
 
-const TimerContext = createContext()
+const Context = createContext()
 
-function useTimerContext () {
-  const context = useContext(TimerContext)
+function useContext () {
+  const context = React.useContext(Context)
   if (!context) {
     throw new Error(
       'Timer compound components cannot be rendered outside the Timer component'
@@ -91,9 +91,9 @@ function Timer ({ children }) {
   }, [now, cook, ready])
 
   return (
-    <TimerContext.Provider value={value}>
+    <Context.Provider value={value}>
       {children}
-    </TimerContext.Provider>
+    </Context.Provider>
   )
 }
 
@@ -102,14 +102,14 @@ Timer.propTypes = {
 }
 
 function Now () {
-  const { now } = useTimerContext()
+  const { now } = useContext()
   return now.format('HH:mm')
 }
 
 Now.displayName = 'Timer.Now'
 
 function ControlReady ({ children }) {
-  const { ready } = useTimerContext()
+  const { ready } = useContext()
 
   return (
     <Controls duration={ready}>
@@ -124,7 +124,7 @@ ControlReady.propTypes = {
 }
 
 function ControlCook ({ children }) {
-  const { cook } = useTimerContext()
+  const { cook } = useContext()
 
   return (
     <Controls duration={cook}>
@@ -139,7 +139,7 @@ ControlCook.propTypes = {
 }
 
 function Wait () {
-  const { wait } = useTimerContext()
+  const { wait } = useContext()
   return wait.format('HH:mm')
 }
 
@@ -147,5 +147,6 @@ Timer.Now = Now
 Timer.ControlCook = ControlCook
 Timer.ControlReady = ControlReady
 Timer.Wait = Wait
+Timer.useContext = useContext
 
 export default Timer

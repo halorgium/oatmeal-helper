@@ -10,3 +10,21 @@ it('renders without crashing', () => {
   ).toJSON()
   expect(tree).toMatchSnapshot()
 })
+
+describe('Context', () => {
+  it('stores the information', () => {
+    const ShowContext = () => {
+      const context = Timer.useContext()
+      return (
+        <span>{JSON.stringify(context)}</span>
+      )
+    }
+
+    const tree = renderer.create(
+      <Timer>
+        <ShowContext />
+      </Timer>
+    ).toJSON()
+    expect(tree).toMatchSnapshot()
+  })
+})
