@@ -4,17 +4,17 @@ import moment from 'moment'
 import 'moment-duration-format'
 import { useControlsContext } from './Controls'
 
-function DeltaControl ({ diff }) {
+function DeltaControl ({ diff, ...props }) {
   const controls = useControlsContext()
   const duration = moment.duration(diff)
   const title = duration.format('HH:mm')
 
   return (
     <>
-      <button type='button' onClick={() => controls.add(duration)}>
+      <button type='button' onClick={() => controls.add(duration)} {...props}>
         +{title}
       </button>
-      <button type='button' onClick={() => controls.add(-duration)}>
+      <button type='button' onClick={() => controls.add(-duration)} {...props}>
         -{title}
       </button>
     </>
