@@ -1,0 +1,68 @@
+.main {
+  font-family: 'Verdana';
+  width: 340px;
+  margin: auto;
+  padding: 30px 15px;
+  border-radius: 30px;
+  border: 1px black solid;
+  background-color: #eee;
+}
+
+h1.title {
+  margin: 0 0 20px 0;
+}
+
+.wide_time {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px black solid;
+  background-color: #ddd;
+  justify-self: center;
+}
+
+.tall_time {
+  justify-self: center;
+  align-self: center;
+}
+
+.controller {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px black solid;
+  background-color: #ccc;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.left {
+  justify-self: start;
+}
+
+.right {
+  justify-self: end;
+}
+
+.button {
+  padding: 15px 3px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+}
+
+.w_1 {
+  width: 50px;
+}
+
+.w_2 {
+  width: 100px;
+}
+
+.w_2p {
+  width: 130px;
+}

@@ -33,6 +33,7 @@
     "react/jsx-sort-props": [0],
     "react/no-multi-comp": [0],
     "react/jsx-no-literals": [0],
+    "react/jsx-props-no-spreading": [0],
     "react/prop-types": [2, {"skipUndeclared": false}],
     "react/prefer-es6-class": [2, "always"]
   },

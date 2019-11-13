@@ -36,4 +36,4 @@ Value.displayName = 'Controls.Value'
 Controls.Value = Value
 
 export default Controls
-export { useControlsContext }
+export { useControlsContext, Value }
