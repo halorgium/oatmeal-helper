@@ -62,11 +62,14 @@ function App () {
             <div className={classNames(styles.left, styles.buttons, styles.w_2p)}>
               <Add diff='00:15' className={classNames(styles.button, styles.w_1)} />
               <Sub diff='00:15' className={classNames(styles.button, styles.w_1)} />
+              <Add diff='00:30' className={classNames(styles.button, styles.w_1)} />
+              <Sub diff='00:30' className={classNames(styles.button, styles.w_1)} />
               <Add diff='01:00' className={classNames(styles.button, styles.w_1)} />
               <Sub diff='01:00' className={classNames(styles.button, styles.w_1)} />
             </div>
             <div className={styles.tall_time}>Cook: <Value /></div>
             <div className={classNames(styles.right, styles.buttons, styles.w_2p)}>
+              <Set time='00:30' className={classNames(styles.button, styles.w_2)} />
               <Set time='02:30' className={classNames(styles.button, styles.w_2)} />
               <Set time='08:00' className={classNames(styles.button, styles.w_2)} />
             </div>
