@@ -13,7 +13,7 @@
     "ecmaFeatures": {
       "jsx": true,
       "modules": true
-    },
+    }
   },
   "env": {
     "es6": true,
@@ -36,5 +36,5 @@
     "react/jsx-props-no-spreading": [0],
     "react/prop-types": [2, {"skipUndeclared": false}],
     "react/prefer-es6-class": [2, "always"]
-  },
+  }
 }
