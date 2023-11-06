@@ -34,7 +34,7 @@ Sub.propTypes = {
 
 function App () {
   return (
-    <Timer initialCook='02:30' initialReady='06:30'>
+    <Timer initialCook='00:30' initialReady='06:45'>
       <div className={styles.main}>
         <header>
           <h1 className={styles.title}>Make Oatmeal</h1>
